@@ -4,7 +4,7 @@ spring:
   # DataSource Config
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://43.138.200.14:3306/my_db
+    url: jdbc:mysql://xxx:3306/my_db
     username: root
     password: root
   mvc:
@@ -17,7 +17,7 @@ spring:
   # redis 配置
   redis:
     port: 6379
-    host: 43.138.200.14
+    host: xxx
     database: 0
     password: 123456
 server:

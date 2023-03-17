@@ -47,7 +47,7 @@ create table `order`(
 CREATE TABLE shopping_cart (
      id    bigint(20) NOT NULL primary key COMMENT '主键',
      user_id bigint(20) NOT NULL COMMENT '用户id',
-     product_id varchar(512)  DEFAULT NULL COMMENT '商品id',
+     product_id bigint  DEFAULT NULL COMMENT '商品id',
      url   varchar(256)  not null comment '商品图片url',
      name varchar(50)  DEFAULT NULL COMMENT '商品名称',
      `number` int(11) NOT NULL DEFAULT '1' COMMENT '数量',
