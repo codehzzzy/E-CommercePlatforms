@@ -11,10 +11,6 @@ import java.math.BigDecimal;
  */
 @Data
 public class ShoppingCartDeleteRequest implements Serializable {
-    /**
-     * 主键
-     */
-    private Long id;
 
     /**
      * 商品id

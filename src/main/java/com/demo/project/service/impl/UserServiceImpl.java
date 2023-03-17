@@ -43,8 +43,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private static final String SALT = "yzzzzzh";
 
     @Override
-    public long userRegister(String userAccount, String userPassword, String checkPassword) {
-        // 1. 校验
+    public long userRegister(String userAccount, String userPassword, String checkPassword,String role) {
+        // 校验
         if (StringUtils.isAnyBlank(userAccount, userPassword, checkPassword)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
         }
@@ -54,6 +54,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (userPassword.length() < 8 || checkPassword.length() < 8) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户密码过短");
         }
+        if (!role.equals(DEFAULT_ROLE) && !role.equals(ADMIN_ROLE)){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户类型错误");
+        }
         // 密码和校验密码相同
         if (!userPassword.equals(checkPassword)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "两次输入的密码不一致");
@@ -61,7 +64,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         synchronized (userAccount.intern()) {
             // 账户不能重复
             QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("userAccount", userAccount);
+            queryWrapper.eq("user_account", userAccount);
             long count = userMapper.selectCount(queryWrapper);
             if (count > 0) {
                 throw new BusinessException(ErrorCode.PARAMS_ERROR, "账号重复");
@@ -72,6 +75,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             User user = new User();
             user.setUserAccount(userAccount);
             user.setUserPassword(encryptPassword);
+            user.setRole(role);
             boolean saveResult = this.save(user);
             if (!saveResult) {
                 throw new BusinessException(ErrorCode.SYSTEM_ERROR, "注册失败，数据库错误");
@@ -111,8 +115,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String encryptPassword = DigestUtils.md5DigestAsHex((SALT + userPassword).getBytes());
         // 查询用户是否存在
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("userAccount", userAccount);
-        queryWrapper.eq("userPassword", encryptPassword);
+        queryWrapper.eq("user_account", userAccount);
+        queryWrapper.eq("user_password", encryptPassword);
         User user = userMapper.selectOne(queryWrapper);
         // 用户不存在
         if (user == null) {
@@ -187,13 +191,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (userRegisterRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
+        String role = userRegisterRequest.getRole();
         String userAccount = userRegisterRequest.getUserAccount();
         String userPassword = userRegisterRequest.getUserPassword();
         String checkPassword = userRegisterRequest.getCheckPassword();
-        if (StringUtils.isAnyBlank(userAccount, userPassword, checkPassword)) {
+        if (StringUtils.isAnyBlank(userAccount, userPassword, checkPassword, role)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        long result = this.userRegister(userAccount, userPassword, checkPassword);
+        long result = this.userRegister(userAccount, userPassword, checkPassword, role);
         return result;
     }
 
@@ -236,21 +241,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     /**
      * 获取用户或管理员列表
      *
-     * @param userQueryRequest
      * @param flag
      * @return
      */
     @Override
-    public List<UserVO> list(UserQueryRequest userQueryRequest, String flag) {
+    public List<UserVO> list(String flag) {
         // 对flag进行限制
         if (!flag.equals(DEFAULT_ROLE) && !flag.equals(ADMIN_ROLE)){
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"该flag不存在");
         }
-        User user = new User();
-        if (userQueryRequest != null) {
-            BeanUtils.copyProperties(userQueryRequest, user);
-        }
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>(user);
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         // 添加限制条件
         queryWrapper.eq("role",flag);
         List<User> userList = this.list(queryWrapper);
@@ -266,14 +266,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     /**
      * 分页获取用户列表
      *
-     * @param userQueryRequest
      * @param flag 判断获取的是管理员列表还是用户列表
      * @param current
      * @param page
      * @return
      */
     @Override
-    public Page<UserVO> listByPage(UserQueryRequest userQueryRequest, String flag, int current, int page) {
+    public Page<UserVO> listByPage(String flag, int current, int page) {
         // 对flag进行限制
         if (!flag.equals(DEFAULT_ROLE) && !flag.equals(ADMIN_ROLE)){
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"该flag不存在");

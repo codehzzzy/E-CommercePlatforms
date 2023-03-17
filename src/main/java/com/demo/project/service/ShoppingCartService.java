@@ -25,7 +25,7 @@ public interface ShoppingCartService extends IService<ShoppingCart> {
      * @param request
      * @return
      */
-    ShoppingCart addShoppingCart(ShoppingCartAddRequest shoppingCartAddRequest, HttpServletRequest request);
+    Boolean addShoppingCart(ShoppingCartAddRequest shoppingCartAddRequest, HttpServletRequest request);
 
     /**
      * 从购物车删除

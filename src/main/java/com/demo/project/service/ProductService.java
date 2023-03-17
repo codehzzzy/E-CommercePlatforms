@@ -25,10 +25,9 @@ public interface ProductService extends IService<Product> {
      * 创建商品
      *
      * @param productAddRequest
-     * @param request
      * @return
      */
-    Long addProduct(ProductAddRequest productAddRequest, HttpServletRequest request);
+    Long addProduct(ProductAddRequest productAddRequest);
 
 
     /**

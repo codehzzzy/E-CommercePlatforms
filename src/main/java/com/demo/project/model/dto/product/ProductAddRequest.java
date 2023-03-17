@@ -10,11 +10,6 @@ import java.math.BigDecimal;
 @Data
 public class ProductAddRequest implements Serializable {
     /**
-     * 商品id
-     */
-    private Long id;
-
-    /**
      * 商品名称
      */
     private String name;
@@ -38,11 +33,6 @@ public class ProductAddRequest implements Serializable {
      * 商品库存
      */
     private Long inventory;
-
-    /**
-     * 是否删除
-     */
-    private Integer isDeleted;
 
     private static final long serialVersionUID = 1L;
 }

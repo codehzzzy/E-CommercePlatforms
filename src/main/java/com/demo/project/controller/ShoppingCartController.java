@@ -33,12 +33,12 @@ public class ShoppingCartController {
      */
     @AuthCheck(mustRole = DEFAULT_ROLE)
     @PostMapping("/add")
-    public BaseResponse<ShoppingCart> add(@RequestBody ShoppingCartAddRequest shoppingCartAddRequest, HttpServletRequest request) {
+    public BaseResponse<Boolean> add(@RequestBody ShoppingCartAddRequest shoppingCartAddRequest, HttpServletRequest request) {
         if (shoppingCartAddRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        ShoppingCart shoppingCart = shoppingCartService.addShoppingCart(shoppingCartAddRequest,request);
-        return ResultUtils.success(shoppingCart);
+        Boolean flag = shoppingCartService.addShoppingCart(shoppingCartAddRequest,request);
+        return ResultUtils.success(flag);
     }
 
 

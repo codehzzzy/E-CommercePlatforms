@@ -51,7 +51,8 @@ public class ShoppingCartServiceImpl extends ServiceImpl<ShoppingCartMapper, Sho
      * @return
      */
     @Override
-    public ShoppingCart addShoppingCart(ShoppingCartAddRequest shoppingCartAddRequest, HttpServletRequest request) {
+    public Boolean addShoppingCart(ShoppingCartAddRequest shoppingCartAddRequest, HttpServletRequest request) {
+        Boolean flag;
         Long userId = getCurrentUserId(request);
         shoppingCartAddRequest.setUserId(userId);
         LambdaQueryWrapper<ShoppingCart> queryWrapper = new LambdaQueryWrapper<>();
@@ -63,18 +64,19 @@ public class ShoppingCartServiceImpl extends ServiceImpl<ShoppingCartMapper, Sho
         }
         // 查询出来的购物车信息
         ShoppingCart queryShoppingCart = this.getOne(queryWrapper);
-
         if (queryShoppingCart != null){
             //已经存在，就在原来数量基础上加1
             Integer number = shoppingCartAddRequest.getNumber();
             queryShoppingCart.setNumber(number+1);
-            this.updateById(queryShoppingCart);
+            flag = this.updateById(queryShoppingCart);
         }else {
             //不存在，添加到购物车
-            queryShoppingCart.setNumber(1);
-            this.save(queryShoppingCart);
+            shoppingCartAddRequest.setNumber(1);
+            ShoppingCart shoppingCart = new ShoppingCart();
+            BeanUtils.copyProperties(shoppingCartAddRequest,shoppingCart);
+            flag = this.save(shoppingCart);
         }
-        return queryShoppingCart;
+        return flag;
     }
 
 

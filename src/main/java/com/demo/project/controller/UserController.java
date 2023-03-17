@@ -39,7 +39,6 @@ public class UserController {
      * @param userRegisterRequest
      * @return
      */
-    @AuthCheck(anyRole = {DEFAULT_ROLE,ADMIN_ROLE})
     @PostMapping("/register")
     public BaseResponse<Long> userRegister(@RequestBody UserRegisterRequest userRegisterRequest) {
         Long res = userService.register(userRegisterRequest);
@@ -53,7 +52,6 @@ public class UserController {
      * @param request
      * @return
      */
-    @AuthCheck(anyRole = {DEFAULT_ROLE,ADMIN_ROLE})
     @PostMapping("/login")
     public BaseResponse<User> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
         User user = userService.userLogin(userLoginRequest, request);
@@ -161,14 +159,13 @@ public class UserController {
     /**
      * 获取用户或管理员列表
      *
-     * @param userQueryRequest
      * @param flag 判断获取的是管理员列表还是用户列表
      * @return
      */
     @AuthCheck(mustRole = ADMIN_ROLE)
     @GetMapping("/list/{flag}")
-    public BaseResponse<List<UserVO>> list(UserQueryRequest userQueryRequest,@PathVariable String flag) {
-        List<UserVO> userVOList = userService.list(userQueryRequest, flag);
+    public BaseResponse<List<UserVO>> list(@PathVariable String flag) {
+        List<UserVO> userVOList = userService.list(flag);
         return ResultUtils.success(userVOList);
     }
 
@@ -176,7 +173,6 @@ public class UserController {
     /**
      * 分页获取用户或管理员列表
      *
-     * @param userQueryRequest
      * @param flag 判断获取的是管理员列表还是用户列表
      * @param current
      * @param page
@@ -184,8 +180,8 @@ public class UserController {
      */
     @AuthCheck(mustRole = ADMIN_ROLE)
     @GetMapping("/list/{flag}/{current}/{page}")
-    public BaseResponse<Page<UserVO>> listByPage(UserQueryRequest userQueryRequest,@PathVariable String flag, @PathVariable int current,@PathVariable int page) {
-        Page<UserVO> userVOPage = userService.listByPage(userQueryRequest, flag, current, page);
+    public BaseResponse<Page<UserVO>> listByPage(@PathVariable String flag, @PathVariable int current,@PathVariable int page) {
+        Page<UserVO> userVOPage = userService.listByPage(flag, current, page);
         return ResultUtils.success(userVOPage);
     }
 }

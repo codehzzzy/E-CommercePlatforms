@@ -15,11 +15,6 @@ import java.util.List;
 @Data
 public class ShoppingCartAddRequest implements Serializable {
     /**
-     * 主键
-     */
-    private Long id;
-
-    /**
      * 用户id
      */
     private Long userId;

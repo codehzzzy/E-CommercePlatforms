@@ -12,11 +12,6 @@ import java.math.BigDecimal;
 @Data
 public class ProductUpdateRequest implements Serializable {
     /**
-     * 商品id
-     */
-    private Long id;
-
-    /**
      * 商品名称
      */
     private String name;

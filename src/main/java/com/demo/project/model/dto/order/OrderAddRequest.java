@@ -10,11 +10,6 @@ import java.time.LocalDate;
 @Data
 public class OrderAddRequest implements Serializable {
     /**
-     * 订单id
-     */
-    private Long id;
-
-    /**
      * 商品id
      */
     private Long productId;

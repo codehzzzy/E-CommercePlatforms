@@ -40,11 +40,11 @@ public class ProductController {
      */
     @AuthCheck(mustRole = ADMIN_ROLE)
     @PostMapping("/add")
-    public BaseResponse<Long> addProduct(@RequestBody ProductAddRequest productAddRequest, HttpServletRequest request) {
+    public BaseResponse<Long> addProduct(@RequestBody ProductAddRequest productAddRequest) {
         if (productAddRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        Long userId = productService.addProduct(productAddRequest,request);
+        Long userId = productService.addProduct(productAddRequest);
         return ResultUtils.success(userId);
     }
 

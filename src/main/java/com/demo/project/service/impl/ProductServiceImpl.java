@@ -44,21 +44,17 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
      * 创建商品
      *
      * @param productAddRequest
-     * @param request
      * @return
      */
     @Override
-    public Long addProduct(ProductAddRequest productAddRequest, HttpServletRequest request) {
+    public Long addProduct(ProductAddRequest productAddRequest) {
         if (productAddRequest == null){
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         Product product = new Product();
         BeanUtils.copyProperties(productAddRequest,product);
-        User user = userService.getLoginUser(request);
-        if (user == null){
-            throw new BusinessException(ErrorCode.FORBIDDEN_ERROR);
-        }
-        return user.getId();
+        this.save(product);
+        return product.getId();
     }
 
 

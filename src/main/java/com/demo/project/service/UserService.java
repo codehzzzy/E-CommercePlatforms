@@ -23,7 +23,7 @@ public interface UserService extends IService<User> {
      * @param checkPassword 校验密码
      * @return 新用户 id
      */
-    long userRegister(String userAccount, String userPassword, String checkPassword);
+    long userRegister(String userAccount, String userPassword, String checkPassword,String role);
 
     /**
      * 用户登录
@@ -88,20 +88,18 @@ public interface UserService extends IService<User> {
     /**
      * 分页获取用户或管理员列表
      *
-     * @param userQueryRequest
      * @param flag 判断获取的是管理员列表还是用户列表
      * @param current
      * @param page
      * @return
      */
-    Page<UserVO> listByPage(UserQueryRequest userQueryRequest, String flag, int current, int page);
+    Page<UserVO> listByPage(String flag, int current, int page);
 
 
     /**
      * 获取用户或管理员列表
      *
-     * @param userQueryRequest
      * @param flag
      */
-    List<UserVO> list(UserQueryRequest userQueryRequest, String flag);
+    List<UserVO> list(String flag);
 }
