@@ -51,6 +51,10 @@ public class ShoppingCart implements Serializable {
      */
     private BigDecimal price;
 
+    //图片
+    private String image;
+
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

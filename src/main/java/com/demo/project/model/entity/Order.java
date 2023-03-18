@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -22,20 +24,16 @@ public class Order implements Serializable {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /**
-     * 订单号
-     */
+    //订单号
     private String number;
 
-    /**
-     * 商品id
-     */
-    private String productId;
+    //订单用户名
+    private String UserName;
 
     /**
      * 下单时间
      */
-    private Date orderTime;
+    private LocalDateTime orderTime;
 
     /**
      * 下单用户id
@@ -43,14 +41,12 @@ public class Order implements Serializable {
     private Long userId;
 
     /**
-     * 购买数量
+     * 用户手机
      */
-    private Long productNumber;
+    private String Phone;
 
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
+    //结账时间
+    private LocalDateTime checkoutTime;
 
     /**
      * 订单状态 1待付款，2待派送，3已派送，4已完成，5已取消
@@ -65,10 +61,13 @@ public class Order implements Serializable {
     /**
      * 订单总价
      */
-    private BigDecimal orderPrice;
+    private BigDecimal amount;
 
     //地址id
-    private Long AddressId;
+    private String Address;
+
+    //收货人
+    private String consignee;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

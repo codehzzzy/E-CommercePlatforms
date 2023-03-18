@@ -6,18 +6,19 @@ import java.time.LocalDate;
 
 /**
  * 订单创建请求
+ * @author Rolin
  */
 @Data
 public class OrderAddRequest implements Serializable {
     /**
-     * 商品id
-     */
-    private Long productId;
-
-    /**
      * 地址id
      */
     private Long addressId;
+
+    /**
+     * 收货人
+     */
+    private String Consignee;
 
     /**
      * 下单时间
@@ -28,11 +29,6 @@ public class OrderAddRequest implements Serializable {
      * 下单用户id
      */
     private Long userId;
-
-    /**
-     * 购买数量
-     */
-    private Long productNumber;
 
     /**
      * 更新时间
