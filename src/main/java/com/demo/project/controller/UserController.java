@@ -64,7 +64,7 @@ public class UserController {
      * @param request
      * @return
      */
-    @AuthCheck(anyRole = {DEFAULT_ROLE,ADMIN_ROLE})
+//    @AuthCheck(anyRole = {DEFAULT_ROLE,ADMIN_ROLE})
     @PostMapping("/logout")
     public BaseResponse<Boolean> userLogout(HttpServletRequest request) {
         if (request == null) {
@@ -184,4 +184,6 @@ public class UserController {
         Page<UserVO> userVOPage = userService.listByPage(flag, current, page);
         return ResultUtils.success(userVOPage);
     }
+
+    //测试分支注释
 }
