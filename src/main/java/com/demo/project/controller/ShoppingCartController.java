@@ -49,7 +49,7 @@ public class ShoppingCartController {
      * @return
      */
     @AuthCheck(mustRole = DEFAULT_ROLE)
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public BaseResponse<ShoppingCart> delete(@RequestBody ShoppingCartDeleteRequest shoppingCartDeleteRequest) {
         ShoppingCart shoppingCart = shoppingCartService.deleteShoppingCart(shoppingCartDeleteRequest);
         return ResultUtils.success(shoppingCart);

@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 
 /**
  * 商品更新请求
+ * @author Rolin
  */
 @Data
 public class ProductUpdateRequest implements Serializable {
@@ -15,6 +16,11 @@ public class ProductUpdateRequest implements Serializable {
      * 商品名称
      */
     private String name;
+
+    /**
+     * 商品id
+     */
+    private Long id;
 
     /**
      * 商品描述

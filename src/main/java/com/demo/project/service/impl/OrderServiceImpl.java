@@ -2,11 +2,15 @@ package com.demo.project.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.demo.project.common.BaseResponse;
 import com.demo.project.common.ErrorCode;
+import com.demo.project.common.ResultUtils;
 import com.demo.project.exception.BusinessException;
 import com.demo.project.model.dto.order.OrderAddRequest;
 import com.demo.project.model.entity.*;
+import com.demo.project.model.vo.OrderVo;
 import com.demo.project.service.*;
 import com.demo.project.mapper.OrderMapper;
 import org.springframework.beans.BeanUtils;
@@ -74,7 +78,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
             orderDetail.setOrderId(orderId);
             orderDetail.setNumber(item.getNumber());
             orderDetail.setName(item.getName());
-            orderDetail.setImage(item.getImage());
+            orderDetail.setImage(item.getUrl());
             orderDetail.setAmount(item.getPrice());
             amount.addAndGet(item.getPrice().multiply(new BigDecimal(item.getNumber())).intValue());
             return orderDetail;
@@ -105,6 +109,41 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
 
         //清空购物车数据
         shoppingCartService.remove(queryWrapper);
+    }
+
+    @Override
+    public BaseResponse<Page> orderPage(OrderAddRequest orderAddRequest, int page, int size) {
+        Long userId = orderAddRequest.getUserId();
+        Page<Order> pageInfo = new Page<>(page, size);
+        Page<OrderVo> voPage = new Page<>();
+        User byId = userService.getById(userId);
+        LambdaQueryWrapper<Order> queryWrapper = new LambdaQueryWrapper<>();
+        if(!"admin".equals(byId.getRole())){
+            queryWrapper.eq(Order::getUserId,userId);
+        }
+        queryWrapper.orderByDesc(Order::getCheckoutTime);
+        this.page(pageInfo,queryWrapper);
+        BeanUtils.copyProperties(pageInfo,voPage,"records");
+        List<Order> orders = pageInfo.getRecords();
+        List<OrderVo> list = orders.stream().map((item) -> {
+            OrderVo orderVo = new OrderVo();
+            //对象拷贝
+            BeanUtils.copyProperties(item,orderVo);
+            //构造条件构造器
+            LambdaQueryWrapper<OrderDetail> wrapper = new LambdaQueryWrapper<>();
+            //订单id
+            Long id = item.getId();
+            wrapper.eq(OrderDetail::getOrderId,id);
+            //根据id查询订单详细表中的数据数量
+            List<OrderDetail> orderDetailList = orderDetailService.list(wrapper);
+            orderVo.setSumNum(orderDetailList.size());
+            orderVo.setOrderDetails(orderDetailList);
+            return orderVo;
+        }).collect(Collectors.toList());
+
+        voPage.setRecords(list);
+
+        return ResultUtils.success(voPage);
     }
 }
 

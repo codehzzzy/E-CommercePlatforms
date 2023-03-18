@@ -10,6 +10,7 @@ import com.demo.project.exception.BusinessException;
 import com.demo.project.model.dto.order.OrderAddRequest;
 import com.demo.project.model.dto.product.ProductAddRequest;
 import com.demo.project.model.dto.product.ProductUpdateRequest;
+import com.demo.project.model.entity.Address;
 import com.demo.project.model.vo.ProductDetailedVO;
 import com.demo.project.model.vo.ProductVO;
 import com.demo.project.service.OrderService;
@@ -42,9 +43,24 @@ public class OrderController {
      * @return
      */
     @AuthCheck(mustRole = DEFAULT_ROLE)
-    @PostMapping("/submit")
-    public BaseResponse<Long> addOrder(@RequestBody OrderAddRequest orderAddRequest) {
+    @PostMapping("/add")
+    public BaseResponse<String> addOrder(@RequestBody OrderAddRequest orderAddRequest) {
         orderService.submit(orderAddRequest);
-        return null;
+        return ResultUtils.success("下单");
+    }
+
+
+    /**
+     * 用户订单分页查询
+     * @param orderAddRequest
+     * @param page
+     * @param size
+     * @return
+     */
+    @AuthCheck(anyRole = {DEFAULT_ROLE,ADMIN_ROLE})
+    @GetMapping("/orderPage")
+    public BaseResponse<Page> page(@RequestBody OrderAddRequest orderAddRequest,int page,int size) {
+        BaseResponse<Page> pageBaseResponse = orderService.orderPage(orderAddRequest, page, size);
+        return pageBaseResponse;
     }
 }

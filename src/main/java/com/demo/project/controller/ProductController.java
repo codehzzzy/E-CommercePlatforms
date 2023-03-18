@@ -119,7 +119,7 @@ public class ProductController {
      * @param description
      * @param price_pre 价格起始值
      * @param price_suf 价格结束值
-     * @param flag 是否查询有库存的商品
+     * @param flag 是否查询无库存的商品
      * @return
      */
     @AuthCheck(anyRole = {DEFAULT_ROLE,ADMIN_ROLE})

@@ -27,6 +27,7 @@ public class User implements Serializable {
     /**
      * 账号
      */
+    @TableField("user_account")
     private String userAccount;
 
     /**
@@ -37,6 +38,7 @@ public class User implements Serializable {
     /**
      * 密码
      */
+    @TableField("user_password")
     private String userPassword;
 
     /**
@@ -53,6 +55,7 @@ public class User implements Serializable {
     private String phone;
 
     //地址id
+    @TableField("address_id")
     private Long AddressId;
 
     /**

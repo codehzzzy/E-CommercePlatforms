@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * 购物车新增请求
+ * @author Rolin
  */
 @Data
 public class ShoppingCartAddRequest implements Serializable {

@@ -72,11 +72,11 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         }
         Product product = new Product();
         BeanUtils.copyProperties(productUpdateRequest,product);
-        boolean flag = this.save(product);
+        boolean flag = this.updateById(product);
         if (!flag){
             throw new BusinessException(ErrorCode.SYSTEM_ERROR,"更新失败");
         }
-        return flag;
+        return true;
     }
 
 

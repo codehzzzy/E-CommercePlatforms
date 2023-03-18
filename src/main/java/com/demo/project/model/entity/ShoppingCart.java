@@ -1,9 +1,7 @@
 package com.demo.project.model.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import lombok.Data;
@@ -18,17 +16,19 @@ public class ShoppingCart implements Serializable {
     /**
      * 主键
      */
-    @TableId
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
      * 用户id
      */
+    @TableField("user_id")
     private Long userId;
 
     /**
      * 商品id
      */
+    @TableField("product_id")
     private Long productId;
 
     /**
@@ -51,9 +51,12 @@ public class ShoppingCart implements Serializable {
      */
     private BigDecimal price;
 
-    //图片
-    private String image;
-
+    /**
+     * 是否删除
+     */
+    @TableLogic
+    @TableField("is_delete")
+    private Integer isDeleted;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
