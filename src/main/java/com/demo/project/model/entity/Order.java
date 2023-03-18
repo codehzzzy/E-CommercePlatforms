@@ -67,6 +67,9 @@ public class Order implements Serializable {
      */
     private BigDecimal orderPrice;
 
+    //地址id
+    private Long AddressId;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

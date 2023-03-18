@@ -41,9 +41,10 @@ public class OrderController {
      * @param orderAddRequest
      * @return
      */
-//    @AuthCheck(mustRole = DEFAULT_ROLE)
-//    @PostMapping("/add")
-//    public BaseResponse<Long> addOrder(@RequestBody OrderAddRequest orderAddRequest) {
-//
-//    }
+    @AuthCheck(mustRole = DEFAULT_ROLE)
+    @PostMapping("/submit")
+    public BaseResponse<Long> addOrder(@RequestBody OrderAddRequest orderAddRequest) {
+        orderService.submit(orderAddRequest);
+        return null;
+    }
 }

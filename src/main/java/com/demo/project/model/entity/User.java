@@ -49,6 +49,12 @@ public class User implements Serializable {
      */
     private Date updateTime;
 
+    //手机号
+    private String phone;
+
+    //地址id
+    private Long AddressId;
+
     /**
      * 是否删除
      */

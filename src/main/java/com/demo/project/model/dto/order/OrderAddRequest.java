@@ -15,6 +15,11 @@ public class OrderAddRequest implements Serializable {
     private Long productId;
 
     /**
+     * 地址id
+     */
+    private Long addressId;
+
+    /**
      * 下单时间
      */
     private LocalDate orderTime;
